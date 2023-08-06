@@ -11,11 +11,12 @@
     <style>
         * {
             font-family: 'Work Sans', sans-serif;
+            cursor: pointer;
         }
         body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            /* overflow: hidden; */
         }
 
         .carousel-container {
@@ -93,15 +94,50 @@
             position: fixed;
             z-index: 999;
             top: 50%;
+            position: fixed;
+    z-index: 999;
+    top: 50%;
+    left: -2px;
+    content: '';
+    width: 60px;
+    height: 60px;
+    color: transparent;
+    border-radius: 0 40px 40px 0;
+    border: 0 none;
+    background: #0000007d;
         }
 
         button.slick-next.slick-arrow {
             position: fixed;
-            z-index: 999;
-            top: 50%;
-            right: 0px;
+    z-index: 999;
+    top: 50%;
+    right: -2px;
+    content: '';
+    width: 60px;
+    height: 60px;
+    color: transparent;
+    border-radius: 40px 0 0 40px;
+    border: 0 none;
+    background: #0000007d;
         }
 
+        .slick-prev:before {
+            content: "";
+            color: #555;
+            font-size: 30px;
+        }
+
+        .slick-next:before {
+            content: "";
+            color: #555;
+            font-size: 30px;
+        }
+
+        .filter {
+            background: rgba(0, 0, 0, 0.2) none repeat scroll 0% 0%;
+            height: 100vh;
+            margin: -20px;
+        }
     </style>
 </head>
 
@@ -120,10 +156,10 @@
                 var productCards = '';
                 $.each(data, function (index, product) {
                     var productCard = '<div lazy class="product-card" style="background-image: url(' + product.contentImage + ');">';
-                    productCard += '<h3>' + product.Title + '</h3>';
-                    productCard += '<p>' + product.Category + '</p>';
+                    productCard += '<div class="filter"><h3>' + product.Title + '</h3>';
+                    productCard += '<p>' + product.Location + '</p>';
                     productCard += '<span>' + product.Price + '</span>';
-                    productCard += '</div>';
+                    productCard += '</div></div>';
                     productCards += productCard;
                 });
     
@@ -133,10 +169,8 @@
                     slidesToShow: 1,
                     slidesToScroll: 1,
                     arrows: true,
-                    dots: true,
+                    dots: false,
                     infinite: true,
-                    autoplay: false,
-                    autoplaySpeed: 3000,
                     swipe: true,
                     draggable: true,
                     lazyLoad: 'ondemand',
@@ -145,7 +179,7 @@
                             breakpoint: 768,
                             settings: {
                                 arrows: true,
-                                dots: true
+                                dots: false
                             }
                         }
                     ]
