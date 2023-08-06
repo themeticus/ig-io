@@ -5,11 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swipeable Full-Screen Carousel</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <style>
+        * {
+            font-family: 'Work Sans', sans-serif;
+        }
         body {
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
 
         .carousel-container {
@@ -25,60 +31,132 @@
             text-align: center;
             height: 100vh;
             padding: 20px;
-            background-color: #f0f0f0;
+            background-size: cover;
+            background-position: center;
+            /* background-size: 1600px !important; */
+            max-width: 100%;
+            text-transform: lowercase;
         }
 
-        .product-card img {
-            max-width: 100%;
-            height: auto;
-            max-height: 200px;
-            margin-bottom: 10px;
+        .product-card h3 {
+            position: absolute;
+    font-size: 24px;
+    top: 120px;
+    margin: 0;
+    border-left: 2px solid #000;
+    background-color: #ffffffb5;
+    padding: 5px 10px;
+    color: #555555;
+    font-weight: normal;
         }
+
+        .product-card p {
+            font-size: 16px;
+            margin: 0;
+            bottom: 40px;
+            position: fixed;
+            /* border-left: 4px solid #555555; */
+            background-color: #000;
+            padding: 5px 10px;
+            color: #fff;
+        }
+
+        .product-card span {
+            text-transform: uppercase; 
+            font-size: 32px;
+            /* background: #00000099; */
+            /* height: 30px; */
+            display: block;
+            background-color: #ffffffb5;
+            /* bottom: 0; */
+            /* right: 0; */
+            position: relative;
+            width: max-content;
+            padding: 5px 10px;
+            color: #555555;
+            position: absolute;
+            top: 75px;
+            border-left: 2px solid #000;
+            float: right;
+            font-weight: bold;
+        }
+
+        .highlight {
+            border-left: 4px solid #555555;
+            background-color: #ffffffb5;
+            padding: 5px 10px;
+            color: #555555;
+        }
+
+        /* slick mods */
+        button.slick-prev.slick-arrow {
+            position: fixed;
+            z-index: 999;
+            top: 50%;
+        }
+
+        button.slick-next.slick-arrow {
+            position: fixed;
+            z-index: 999;
+            top: 50%;
+            right: 0px;
+        }
+
     </style>
 </head>
 
 <body>
     <div class="carousel-container">
         <div class="carousel-track">
-            <div class="product-card">
-                <img src="smartphone.jpg" alt="Smartphone">
-                <h3>Smartphone</h3>
-                <p>Best smartphone with cutting-edge features.</p>
-            </div>
-            <div class="product-card">
-                <img src="laptop.jpg" alt="Laptop">
-                <h3>Laptop</h3>
-                <p>Powerful laptop for all your computing needs.</p>
-            </div>
+            <!-- Each product card will be dynamically generated here -->
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('.carousel-track').slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                arrows: true,
-                dots: true,
-                infinite: true,
-                autoplay: false,
-                autoplaySpeed: 3000,
-                swipe: true,
-                draggable: true,
-                responsive: [
-                    {
-                        breakpoint: 768,
-                        settings: {
-                            arrows: true,
-                            dots: true
+            $.getJSON('lifetree-data.json', function (data) {
+                var productCards = '';
+                $.each(data, function (index, product) {
+                    var productCard = '<div lazy class="product-card" style="background-image: url(' + product.contentImage + ');">';
+                    productCard += '<h3>' + product.Title + '</h3>';
+                    productCard += '<p>' + product.Category + '</p>';
+                    productCard += '<span>' + product.Price + '</span>';
+                    productCard += '</div>';
+                    productCards += productCard;
+                });
+    
+                $('.carousel-track').append(productCards);
+
+                $('.carousel-track').slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: true,
+                    dots: true,
+                    infinite: true,
+                    autoplay: false,
+                    autoplaySpeed: 3000,
+                    swipe: true,
+                    draggable: true,
+                    lazyLoad: 'ondemand',
+                    responsive: [
+                        {
+                            breakpoint: 768,
+                            settings: {
+                                arrows: true,
+                                dots: true
+                            }
                         }
-                    }
-                ]
+                    ]
+                });
             });
         });
     </script>
 </body>
 
 </html>
+
+
+
+

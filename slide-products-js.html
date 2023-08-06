@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swipeable Full-Screen Carousel</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .carousel-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease; /* Added CSS transition */
+        }
+
+        .product-card {
+            flex: 0 0 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            padding: 20px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .product-card h3 {
+            color: white;
+            font-size: 24px;
+        }
+
+        .product-card p {
+            color: white;
+            font-size: 16px;
+            max-width: 80%;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="carousel-container">
+        <div class="carousel-track">
+            <!-- Each product card will be dynamically generated here -->
+        </div>
+    </div>
+
+    <script>
+        function swipeCarousel() {
+            const carouselTrack = document.querySelector('.carousel-track');
+            let isDragging = false;
+            let startPosition = 0;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+            let animationID = 0;
+
+            function animateCarousel() {
+                if (currentTranslate !== prevTranslate) {
+                    carouselTrack.style.transform = `translateX(${currentTranslate}px)`;
+                    prevTranslate = currentTranslate;
+                }
+                animationID = requestAnimationFrame(animateCarousel);
+            }
+
+            function setTranslate(xPos) {
+                currentTranslate = xPos;
+            }
+
+            carouselTrack.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startPosition = e.clientX - carouselTrack.offsetLeft;
+                currentTranslate = prevTranslate;
+                cancelAnimationFrame(animationID);
+            });
+
+            carouselTrack.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const currentPosition = e.clientX - carouselTrack.offsetLeft;
+                const translate = currentTranslate + currentPosition - startPosition;
+                setTranslate(translate);
+            });
+
+            carouselTrack.addEventListener('mouseup', () => {
+                isDragging = false;
+                cancelAnimationFrame(animationID);
+                animateCarousel();
+            });
+
+            carouselTrack.addEventListener('mouseleave', () => {
+                isDragging = false;
+                cancelAnimationFrame(animationID);
+                animateCarousel();
+            });
+
+            carouselTrack.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startPosition = e.touches[0].clientX - carouselTrack.offsetLeft;
+                currentTranslate = prevTranslate;
+                cancelAnimationFrame(animationID);
+            });
+
+            carouselTrack.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const currentPosition = e.touches[0].clientX - carouselTrack.offsetLeft;
+                const translate = currentTranslate + currentPosition - startPosition;
+                setTranslate(translate);
+            });
+
+            carouselTrack.addEventListener('touchend', () => {
+                isDragging = false;
+                cancelAnimationFrame(animationID);
+                animateCarousel();
+            });
+
+            animateCarousel();
+        }
+
+        function loadProducts() {
+            fetch('/data.json')
+                .then((response) => response.json())
+                .then((data) => {
+                    const carouselTrack = document.querySelector('.carousel-track');
+                    let productCards = '';
+                    data.forEach((product) => {
+                        const productCard = `
+                            <div class="product-card" style="background-image: url(${product.coverImage});">
+                                <h3>${product.Title}</h3>
+                                <p>${product.Category}</p>
+                                <p>${product.Price}</p>
+                            </div>
+                        `;
+                        productCards += productCard;
+                    });
+                    carouselTrack.innerHTML = productCards;
+                    swipeCarousel();
+                })
+                .catch((error) => console.error(error));
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+</body>
+
+</html>
