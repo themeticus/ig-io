@@ -53,30 +53,32 @@
             font-weight: 300;
             text-transform: capitalize;
             margin: 0;
-            top: 20px;
+            top: 83px;
             position: fixed;
             /* border-left: 4px solid #555555; */
-            background-color: #000000bf;
+            background-color: #000000f2;
             padding: 5px 10px;
             color: #fff;
+            text-overflow: ellipsis;
         }
 
         .product-card p {
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin: 0;
-            top: 58px;
+            top: 54px;
             position: fixed;
             /* border-left: 4px solid #555555; */
-            background-color: #747474a8;
+            background-color: dimgray;
             padding: 5px 10px;
-            color: #fff;
-            text-transform: capitalize;
-            font-weight: 300;
+            color: darkgray;
+            text-transform: uppercase;
+            font-weight: 400;
+            font-family: system-ui;
         }
 
         .product-card span {
             text-transform: uppercase;
-            font-size: 3rem;
+            font-size: 2rem;
             /* background: #00000099; */
             /* height: 30px; */
             display: block;
@@ -92,6 +94,14 @@
             /* border-right: 2px solid #000; */
             float: right;
             font-weight: 100;
+        }
+
+        .product-card .options {
+            bottom: 24px;
+            BACKGROUND-COLOR: brown;
+            FONT-SIZE: 1REM;
+            text-transform: uppercase;
+            font-weight: 300;
         }
 
         .highlight {
@@ -167,10 +177,11 @@
             $.getJSON('data.json', function (data) {
                 var productCards = '';
                 $.each(data, function (index, product) {
-                    var productCard = '<div lazy class="product-card" style="background-image: url(' + product.coverImage + ');">';
+                    var productCard = '<div lazy class="product-card" style="background-image: url(' + product.contentImage + ');">';
                     productCard += '<div class="filter"><h3>' + product.Title + '</h3>';
                     productCard += '<p>' + product.Location + '</p>';
-                    productCard += '<span>' + product.Price + '</span>';
+                    productCard += '<span>R' + product.Price + '</span>';
+                    productCard += '<span class="options">see options</span>';
                     productCard += '</div></div>';
                     productCards += productCard;
                 });
