@@ -19,7 +19,16 @@
             padding: 0;
             /* overflow: hidden; */
         }
-
+        small {
+            top: 122px;
+            position: absolute;
+            display: inherit;
+            width: max-content;
+            background: #a52f2a;
+            color: #fff;
+            padding: 5px 10px;
+            text-transform: uppercase;
+        }
         .carousel-container {
             width: 100%;
             height: 100vh;
@@ -179,6 +188,7 @@
                 $.each(data, function (index, product) {
                     var productCard = '<div lazy class="product-card" style="background-image: url(' + product.contentImage + ');">';
                     productCard += '<div class="filter"><h3>' + product.Title + '</h3>';
+                    productCard += '<small>' + product.SubTitle + '</small>';
                     productCard += '<p>' + product.Location + '</p>';
                     productCard += '<span>R' + product.Price + '</span>';
                     productCard += '<span class="options">see options</span>';
