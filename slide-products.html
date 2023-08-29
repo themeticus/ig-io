@@ -24,7 +24,7 @@
             position: absolute;
             display: inherit;
             width: max-content;
-            background: #a52f2a;
+            background: #9b7e73;
             color: #fff;
             padding: 5px 10px;
             text-transform: uppercase;
@@ -107,7 +107,7 @@
 
         .product-card .options {
             bottom: 24px;
-            BACKGROUND-COLOR: brown;
+            BACKGROUND-COLOR: #9b7e73;
             FONT-SIZE: 1REM;
             text-transform: uppercase;
             font-weight: 300;
@@ -169,13 +169,30 @@
             height: 100vh;
             margin: 0px;
         }
+
+        .brand {
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            width: 100px;
+            background-color: #c4c4c47d;
+            border-bottom: 5px solid #9b7e73;
+            width: 100px;
+            padding: 10px 20px;
+            
+            @media (min-width: 767px) {
+                width: 150px;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <!-- <img src="https://b-cdn.springnest.com/media/img/143/marketing__media049f651.png?width=300&height=300" class="brand" /> -->
+    <img src="https://b-cdn.springnest.com/media/svg/lifetree_collection_1767e73be2b90a4_copy_2.svg" class="brand" />
     <div class="carousel-container">
         <div class="carousel-track">
-            <!-- Each product card will be dynamically generated here -->
         </div>
     </div>
 
@@ -183,12 +200,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script>
         $(document).ready(function () {
-            $.getJSON('data.json', function (data) {
+            $.getJSON('lifetree-data.json', function (data) {
                 var productCards = '';
                 $.each(data, function (index, product) {
                     var productCard = '<div lazy class="product-card" style="background-image: url(' + product.contentImage + ');">';
                     productCard += '<div class="filter"><h3>' + product.Title + '</h3>';
-                    productCard += '<small>' + product.SubTitle + '</small>';
+                    // productCard += '<small>' + product.SubTitle + '</small>';
                     productCard += '<p>' + product.Location + '</p>';
                     productCard += '<span>R' + product.Price + '</span>';
                     productCard += '<span class="options">see options</span>';
